@@ -9,10 +9,10 @@ router.get('/', shopController.getIndex);
 router.get('/products', shopController.getProducts);
 router.get('/products/:productId', shopController.getProductDetails);
 router.get('/cart', shopController.getCart);
+router.get('/orders', shopController.getOrders);
+// router.get('/checkout', shopController.getCheckout);
 router.post('/cart', shopController.postCart);
 router.post('/cart-delete-item', shopController.postCartDeleteProduct);
-router.get('/orders', shopController.getOrders);
 router.post('/create-order', shopController.postOrderCreate);
-// router.get('/checkout', shopController.getCheckout);
 
 module.exports = router;
