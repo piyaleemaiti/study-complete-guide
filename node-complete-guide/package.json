@@ -23,6 +23,7 @@
     "express": "4.17.1",
     "express-handlebars": "3.0.2",
     "express-session": "1.17.1",
+    "express-validator": "^6.6.0",
     "mongodb": "3.5.7",
     "mongoose": "^5.9.19",
     "mysql2": "2.1.0",

@@ -63,6 +63,7 @@ exports.getNewPassword = (req, res, next) => {
         pageTitle: "Update Password",
         errorMsg: message,
         userId: user._id,
+        passwordToken: token,
       });
     })
     .catch((err) => console.log(err));
@@ -185,7 +186,8 @@ exports.postReset = (req, res, next) => {
 exports.postNewPassword = (req, res, next) => {
   const password = req.body.password;
   const userId = req.body.userId;
-  User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() }, _id: userId })
+  const passwordToken = req.body.passwordToken;
+  User.findOne({ resetToken: passwordToken, resetTokenExpiration: { $gt: Date.now() }, _id: userId })
     .then((user) => {
       if (!user) {
         return res.redirect("/");
