@@ -1,5 +1,6 @@
 const bcryptjs = require("bcryptjs");
 const crypto = require("crypto");
+const { validationResult } = require('express-validator');
 const User = require("../models/user");
 const mailSender = require("../util/email");
 
@@ -103,9 +104,19 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
+  const errors = validationResult(req);
+  console.log('error', errors.array());
+  if (!errors.isEmpty()) {
+    return res.status(422).render("auth/signup", {
+      path: "/signup",
+      pageTitle: "Signup",
+      errorMsg: errors.array()[0].msg,
+    });
+  }
   if (password === confirmPassword) {
     User.findOne({ email: email })
       .then((userOld) => {
+        console.log('userOld', userOld);
         if (userOld) {
           req.flash(
             "error",
