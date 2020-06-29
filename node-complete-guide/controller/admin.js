@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 const Product = require("../models/product");
 
 exports.getProducts = (req, res, next) => {
@@ -86,7 +87,7 @@ exports.postAddProduct = (req, res, next) => {
     .then((result) => {
       res.redirect("/admin/products");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.redirect('/500'));
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -125,7 +126,7 @@ exports.postEditProduct = (req, res, next) => {
       return product.save();
     })
     .then(() => res.redirect("/admin/products"))
-    .catch((error) => console.log(error));
+    .catch((error) => res.redirect('/500'));
 };
 
 exports.postDeleteProduct = (req, res, next) => {

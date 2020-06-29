@@ -4,19 +4,20 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const csrf = require('csurf');
-const flash = require('connect-flash');
+const csrf = require("csurf");
+const flash = require("connect-flash");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 const errorController = require("./controller/error");
 const User = require("./models/user");
-const MONGODB_URI = "mongodb+srv://m001-student:m001-mongodb-basics@cluster0-kjwk5.mongodb.net/nodeComplete";
+const MONGODB_URI =
+  "mongodb+srv://m001-student:m001-mongodb-basics@cluster0-kjwk5.mongodb.net/nodeComplete";
 const app = express();
 const store = new MongoDBStore({
   uri: MONGODB_URI,
-  collection: 'sessions'
+  collection: "sessions",
 });
 const csrfProtection = csrf();
 
@@ -41,11 +42,16 @@ app.use((req, res, next) => {
     return next();
   }
   User.findById(req.session.user._id)
-    .then(user => {
+    .then((user) => {
+      if (!user) {
+        next();
+      }
       req.user = user;
       next();
     })
-    .catch(err => console.log(err));
+    .catch((err) => {
+      throw new Error(err);
+    });
 });
 app.use((req, res, next) => {
   res.locals.isAuthenticate = req.session.isLoggedIn;
@@ -56,6 +62,7 @@ app.use((req, res, next) => {
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
+app.use('/500', errorController.get500);
 
 app.use(errorController.get404);
 
