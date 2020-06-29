@@ -71,14 +71,18 @@ exports.getNewPassword = (req, res, next) => {
         passwordToken: token,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const errors = validationResult(req);
-  if(!errors.isEmpty()) {
+  if (!errors.isEmpty()) {
     return res.status(422).render("auth/login", {
       pageTitle: "Login",
       path: "/login",
@@ -104,7 +108,7 @@ exports.postLogin = (req, res, next) => {
           return res.status(422).render("auth/login", {
             pageTitle: "Login",
             path: "/login",
-            errorMsg: 'Invalid email or password.',
+            errorMsg: "Invalid email or password.",
             oldInput: {
               email: email,
               password: password,
@@ -114,7 +118,11 @@ exports.postLogin = (req, res, next) => {
         }
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postSignup = (req, res, next) => {
@@ -123,7 +131,6 @@ exports.postSignup = (req, res, next) => {
   const confirmPassword = req.body.confirmPassword;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log("error", errors.array());
     return res.status(422).render("auth/signup", {
       path: "/signup",
       pageTitle: "Signup",
@@ -131,7 +138,7 @@ exports.postSignup = (req, res, next) => {
       oldInput: {
         email: email,
         password: password,
-        confirmPassword: confirmPassword
+        confirmPassword: confirmPassword,
       },
       validationErrors: errors.array(),
     });
@@ -157,7 +164,11 @@ exports.postSignup = (req, res, next) => {
       //   html: "<h1>You successfully signed up!</h1>",
       // });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postLogout = (req, res, next) => {
@@ -170,7 +181,6 @@ exports.postLogout = (req, res, next) => {
 exports.postReset = (req, res, next) => {
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
-      console.log(err);
       return res.redirect("/reset");
     }
     const token = buffer.toString("hex");
@@ -186,17 +196,21 @@ exports.postReset = (req, res, next) => {
       })
       .then((result) => {
         res.redirect("/");
-        return mailSender.sendMail({
-          to: req.body.email,
-          from: "pmaiti@shop.com",
-          subject: "Password Reset",
-          html: `
-            <p>You requested a password reset.</p>
-            <p> Click the <a href="http://localhost:4000/reset/${token}">link to reset the password.</p>
-          `,
-        });
+        // return mailSender.sendMail({
+        //   to: req.body.email,
+        //   from: "pmaiti@shop.com",
+        //   subject: "Password Reset",
+        //   html: `
+        //     <p>You requested a password reset.</p>
+        //     <p> Click the <a href="http://localhost:4000/reset/${token}">link to reset the password.</p>
+        //   `,
+        // });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+      });
   });
 };
 
@@ -222,7 +236,15 @@ exports.postNewPassword = (req, res, next) => {
         .then((result) => {
           return res.redirect("/login");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          const error = new Error(err);
+          error.httpStatusCode = 500;
+          return next(error);
+        });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
