@@ -16,13 +16,13 @@ router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
 router.post('/add-product', [
   body('title', 'Please enter valid title').isString().isLength({ min: 3 }).trim(),
   body('price', 'Please enter valid price').trim().isFloat(),
-  body('imageUrl', 'Please enter valid image url').trim().isURL(),
+  // body('imageUrl', 'Please enter valid image url').trim().isURL(),
   body('description', 'Please enter description minimun 8 and maximum 400 character').isLength({ min: 8, max: 400 }).trim(),
 ], isAuth, adminController.postAddProduct);
 router.post('/edit-product', [
   body('title', 'Please enter valid title').isString().isLength({ min: 3 }).trim(),
   body('price', 'Please enter valid price').trim().isFloat(),
-  body('imageUrl', 'Please enter valid image url').trim().isURL(),
+  // body('imageUrl', 'Please enter valid image url').trim().isURL(),
   body('description', 'Please enter description minimun 8 and maximum 400 character').isLength({ min: 8, max: 400 }).trim(),
 ], isAuth, adminController.postEditProduct);
 router.post('/delete-product', isAuth, adminController.postDeleteProduct);
