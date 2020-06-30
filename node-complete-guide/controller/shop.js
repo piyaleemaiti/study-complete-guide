@@ -1,5 +1,9 @@
+const path = require('path');
+const fs = require('fs');
+
 const Product = require("../models/product");
 const Order = require("../models/order");
+const { fstat } = require('fs');
 
 exports.getIndex = (req, res, next) => {
   Product.find()
@@ -90,6 +94,32 @@ exports.getCheckout = (req, res, next) => {
   res.render("shop/checkout", {
     path: "/checkout",
     pageTitle: "Checkout",
+  });
+};
+
+exports.getOrdersInvoice = (req, res, next) => {
+  const orderId = req.params.orderId;
+  Order.findById(orderId).then(order => {
+    if(!order) {
+      return next(new Error('No order found'));
+    }
+    if(order.user.userId.toString() !== req.user._id.toString()) {
+      return next(new Error('Unauthorized'));
+    }
+    const invoiceName = `invoice-${orderId}.pdf`;
+    const invoicePath = path.join('data', 'invoices', invoiceName);
+    // fs.readFile(invoicePath, (err, data) => {
+    //   if (err) {
+    //     return next(err);
+    //   }
+    //   res.setHeader('Content-type', 'application/pdf');
+    //   res.setHeader('Content-Disposition', 'inline; filename="'+ invoiceName +'"');
+    //   res.send(data);
+    // });
+    const file = fs.createReadStream(invoicePath);
+    res.setHeader('Content-type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline; filename="'+ invoiceName +'"');
+    file.pipe(res);
   });
 };
 
