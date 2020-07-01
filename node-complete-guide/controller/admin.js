@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 const Product = require("../models/product");
+const fileHelper = require("../util/file");
 
 exports.getProducts = (req, res, next) => {
   Product.find({ userId: req.user._id })
@@ -70,7 +71,7 @@ exports.postAddProduct = (req, res, next) => {
       path: "/admin/add-product",
       editing: false,
       hasError: true,
-      errorMsg: 'Attached file not an image',
+      errorMsg: "Attached file not an image",
       validationErrors: [],
       product: {
         title,
@@ -79,7 +80,7 @@ exports.postAddProduct = (req, res, next) => {
       },
     });
   }
-  console.log('image', image);
+  console.log("image", image);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.array());
@@ -131,7 +132,7 @@ exports.postEditProduct = (req, res, next) => {
       path: "/admin/edit-product",
       editing: true,
       hasError: true,
-      errorMsg: 'Attached file not image',
+      errorMsg: "Attached file not image",
       product: {
         _id,
         title,
@@ -164,8 +165,11 @@ exports.postEditProduct = (req, res, next) => {
       if (product.userId.toString() !== req.user._id.toString()) {
         return res.redirect("/");
       }
+      if (image) {
+        fileHelper.deleteFile(product.imageUrl);
+        product.imageUrl = image.path;
+      }
       product.title = title;
-      product.imageUrl = image.path;
       product.price = price;
       product.description = description;
       return product.save();
@@ -180,9 +184,17 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteOne({ _id: prodId, userId: req.user._id })
+  Product.findById(prodId)
+    .then((product) => {
+      if (!product) {
+        return next(new Error("No Product Found"));
+      }
+      fileHelper.deleteFile(product.imageUrl);
+      return Product.deleteOne({ _id: prodId, userId: req.user._id });
+    })
     .then((result) => res.redirect("/admin/products"))
     .catch((err) => {
+      console.log('err', err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
