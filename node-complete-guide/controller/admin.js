@@ -187,7 +187,7 @@ exports.deleteProduct = (req, res, next) => {
   Product.findById(prodId)
     .then((product) => {
       if (!product) {
-        res.status(500).json({ message: "Deleting Product Failed!" })
+        res.status(500).json({ message: "Deleting Product Failed!" });
       }
       fileHelper.deleteFile(product.imageUrl);
       return Product.deleteOne({ _id: prodId, userId: req.user._id });

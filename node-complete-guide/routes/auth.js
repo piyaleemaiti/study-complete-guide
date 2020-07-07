@@ -28,7 +28,11 @@ router.post(
         });
       })
       .normalizeEmail(),
-    body("password").not().isEmpty().withMessage("Please provide password").trim(),
+    body("password")
+      .not()
+      .isEmpty()
+      .withMessage("Please provide password")
+      .trim(),
   ],
   authController.postLogin
 );
