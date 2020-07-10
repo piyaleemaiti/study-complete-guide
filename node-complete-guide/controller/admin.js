@@ -80,7 +80,6 @@ exports.postAddProduct = (req, res, next) => {
       },
     });
   }
-  console.log("image", image);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.array());
