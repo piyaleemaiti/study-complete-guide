@@ -51,6 +51,7 @@ app.use("/auth", userRoute);
 
 app.use((error, req, res, next) => {
   if (error) {
+    console.log('error', error)
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;

@@ -3,6 +3,7 @@ const { body } = require("express-validator");
 
 const User = require("../modals/user");
 const userController = require("../controllers/user");
+const isAuth = require('../moddleware/isAuth');
 
 const router = express.Router();
 
@@ -27,5 +28,9 @@ router.put(
   ],
   userController.signupUser
 );
+
+router.post("/login", userController.loginUser);
+router.get("/status", isAuth, userController.getUserstatus);
+router.patch("/status", isAuth, userController.updateUserStatus);
 
 module.exports = router;
