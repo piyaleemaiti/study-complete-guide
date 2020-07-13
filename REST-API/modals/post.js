@@ -18,7 +18,7 @@ const orderSchema = new Schema({
   },
   creator: {
     type: Schema.Types.ObjectId,
-    ref: 'USer',
+    ref: 'User',
     required: true,
   },
 }, { timestamps: true });
