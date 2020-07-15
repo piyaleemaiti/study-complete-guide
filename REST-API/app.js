@@ -3,9 +3,10 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const path = require("path");
 const multer = require("multer");
+const { graphqlHTTP } = require("express-graphql");
 
-const feedRoutes = require("./routes/feed");
-const userRoute = require("./routes/user");
+const graphqlSchema = require("./graphql/schema");
+const graphqlresolver = require("./graphql/resolver");
 
 const MONGODB_URI =
   "mongodb+srv://m001-student:m001-mongodb-basics@cluster0-kjwk5.mongodb.net/postmessages";
@@ -46,8 +47,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/feed", feedRoutes);
-app.use("/auth", userRoute);
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: graphqlSchema,
+    rootValue: graphqlresolver,
+  })
+);
 
 app.use((error, req, res, next) => {
   if (error) {
@@ -59,12 +65,8 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => {
-    const server = app.listen(8080);
-    const io = require("./socket").init(server);
-    io.on("connection", (socket) => {
-      console.log("Client connection");
-    });
+    app.listen(8080);
   })
   .catch((err) => console.log(err));
