@@ -33,7 +33,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 app.use(
-  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use((req, res, next) => {
@@ -51,7 +51,6 @@ app.use("/auth", userRoute);
 
 app.use((error, req, res, next) => {
   if (error) {
-    console.log('error', error)
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;
@@ -59,10 +58,13 @@ app.use((error, req, res, next) => {
   }
 });
 
-app.listen(8080);
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    app.listen(4000);
+    const server = app.listen(8080);
+    const io = require("./socket").init(server);
+    io.on("connection", (socket) => {
+      console.log("Client connection");
+    });
   })
   .catch((err) => console.log(err));
