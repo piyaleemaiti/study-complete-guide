@@ -7,6 +7,7 @@ const { graphqlHTTP } = require("express-graphql");
 
 const graphqlSchema = require("./graphql/schema");
 const graphqlresolver = require("./graphql/resolver");
+const auth = require("./middleware/isAuth");
 
 const MONGODB_URI =
   "mongodb+srv://m001-student:m001-mongodb-basics@cluster0-kjwk5.mongodb.net/postmessages";
@@ -50,6 +51,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(auth);
+
 app.use(
   "/graphql",
   graphqlHTTP({
@@ -57,6 +60,7 @@ app.use(
     rootValue: graphqlresolver,
     graphiql: true,
     customFormatErrorFn(err) {
+      console.log('customFormatErrorFn', err);
       if (!err.originalError) {
         return err;
       }

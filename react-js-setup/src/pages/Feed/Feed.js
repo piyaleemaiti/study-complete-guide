@@ -25,7 +25,7 @@ class Feed extends Component {
     fetch("http://localhost:8080/auth/status", {
       headers: {
         Authorization: `Bearer ${this.props.token}`,
-      }
+      },
     })
       .then((res) => {
         if (res.status !== 200) {
@@ -54,21 +54,44 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    fetch(`http://localhost:8080/feed/posts/?page=${page}`, {
+    const graphQuery = {
+      query: `
+        {
+          posts(page: ${page}){
+            totalItems
+            posts {
+              _id
+              title
+              content
+              creator {
+                name
+              }
+              createdAt
+            }
+          }
+        }
+      `,
+    };
+    fetch("http://localhost:8080/graphql", {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${this.props.token}`,
-      }
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(graphQuery),
     })
-      .then((res) => {
-        if (res.status !== 200) {
-          throw new Error("Failed to fetch posts.");
-        }
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((resData) => {
+        if (resData.errors) {
+          throw new Error("Post fetch failed!");
+        }
+        const response = resData.data.posts;
         this.setState({
-          posts: resData.posts.map(post => ({ ...post, imagePath: post.imageUrl })),
-          totalPosts: resData.totalItems,
+          posts: response.posts.map((post) => ({
+            ...post,
+            imagePath: post.imageUrl,
+          })),
+          totalPosts: response.totalItems,
           postsLoading: false,
         });
       })
@@ -81,10 +104,10 @@ class Feed extends Component {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${this.props.token}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        status: this.state.status
+        status: this.state.status,
       }),
     })
       .then((res) => {
@@ -123,45 +146,77 @@ class Feed extends Component {
       editLoading: true,
     });
     // Set up data (with image!)
-    let url = "http://localhost:8080/feed/post";
-    let method = "POST";
     let formData = new FormData();
     formData.append("title", postData.title);
     formData.append("content", postData.content);
     formData.append("image", postData.image);
+    let graphQuery = {
+      query: `
+        mutation {
+          createPost(postInput:{
+            title: "${postData.title}",
+            content: "${postData.content}",
+            imageUrl: "some url"
+          }), {
+            _id
+            title
+            content
+            creator {
+              name
+            }
+            createdAt
+          }
+        }
+      `,
+    };
     if (this.state.editPost) {
-      url = `http://localhost:8080/feed/post/${this.state.editPost._id}`;
-      method = "PUT";
+      graphQuery = {
+        query: ``,
+      };
     }
 
-    fetch(url, {
-      method: method,
-      body: formData,
+    fetch("http://localhost:8080/graphql", {
+      method: "POST",
+      body: JSON.stringify(graphQuery),
       headers: {
         Authorization: `Bearer ${this.props.token}`,
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Creating or editing a post failed!");
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.errors && response.errors[0].status === 401) {
+          throw new Error("Please put correct email or password");
         }
-        return res.json();
-      })
-      .then((resData) => {
+        if (response.errors) {
+          throw new Error("Could not authenticate you!");
+        }
+        const resData = response.data.createPost;
         const post = {
-          _id: resData.post._id,
-          title: resData.post.title,
-          content: resData.post.content,
-          creator: resData.post.creator,
-          createdAt: resData.post.createdAt,
+          _id: resData._id,
+          title: resData.title,
+          content: resData.content,
+          creator: resData.creator,
+          createdAt: resData.createdAt,
         };
-        this.setState((prevState) => {
+        this.setState(prevState => {
+          let updatedPosts = [...prevState.posts];
+          if (prevState.editPost) {
+            const postIndex = prevState.posts.findIndex(
+              p => p._id === prevState.editPost._id
+            );
+            updatedPosts[postIndex] = post;
+          } else {
+            updatedPosts.pop();
+            updatedPosts.unshift(post);
+          }
           return {
+            posts: updatedPosts,
             isEditing: false,
             editPost: null,
-            editLoading: false,
+            editLoading: false
           };
-        });
+        });        
       })
       .catch((err) => {
         console.log(err);
@@ -184,7 +239,7 @@ class Feed extends Component {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${this.props.token}`,
-      }
+      },
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
