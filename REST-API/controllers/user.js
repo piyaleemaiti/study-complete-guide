@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../modals/user");
-
+// user controller
 exports.signupUser = async (req, res, next) => {
   const email = req.body.email;
   const name = req.body.name;
