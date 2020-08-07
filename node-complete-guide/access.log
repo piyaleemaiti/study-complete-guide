@@ -1,0 +1,5 @@
+::1 - - [06/Aug/2020:17:39:25 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+::1 - - [06/Aug/2020:17:39:25 +0000] "GET /css/main.css HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+::1 - - [06/Aug/2020:17:39:25 +0000] "GET /css/product.css HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+::1 - - [06/Aug/2020:17:39:25 +0000] "GET /images/2020-07-01T04:59:17.035Z-20191031080623_IMG_8630.jpg HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+::1 - - [06/Aug/2020:17:39:25 +0000] "GET /images/2020-07-01T05:00:03.198Z-20191031081003_IMG_8645.jpg HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
