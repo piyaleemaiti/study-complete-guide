@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "Complete Node.js Guide",
   "main": "app.js",
+  "engines": {
+    "node": "12.13.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "NODE_ENV=production MONGO_USER=m001-student MONGO_PASSWORD=m001-mongodb-basics MONGO_DEFAULT_DATABASE=nodeComplete node app.js",
     "start-server": "node app.js",
     "start:dev": "nodemon app.js"
@@ -17,6 +20,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "1.19.0",
+    "chai": "^4.2.0",
     "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "2.3.3",
@@ -27,6 +31,7 @@
     "express-session": "1.17.1",
     "express-validator": "^6.6.0",
     "helmet": "^4.0.0",
+    "mocha": "^8.1.1",
     "mongodb": "3.5.7",
     "mongoose": "^5.9.19",
     "morgan": "^1.10.0",
