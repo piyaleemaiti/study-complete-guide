@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const User = require('../modals/user');
 const FeedController = require('../controllers/feed');
 
-describe('Auth Controller - Login', () => {
+describe('Feed Controller - CreatePost', () => {
   before((done) => {
     mongoose
       .connect(
@@ -25,25 +25,33 @@ describe('Auth Controller - Login', () => {
         done();
       });
   });
+  beforeEach(() => {});
 
+  afterEach(() => {});
 
   it('should add created post to the posts of the creator', (done) => {
-    sinon.stub(User, 'findOne');
-    User.findOne.throws();
     const req = {
       body: {
-        email: 'test@est.com',
-        password: 'tester',
-      }
+        title: 'Test Post',
+        content: 'A Test Post'
+      },
+      file: {
+        path: 'abc'
+      },
+      userId: '5c0f66b979af55031b34728a'
+    };
+    const res = {
+      status: function() {
+        return this;
+      },
+      json: function() {}
     };
 
-    AuthController.loginUser(req, {}, () => {}).then((result) => {
-      expect(result).to.be.an('error');
-      expect(result).to.have.property('statusCode', 500);
+    FeedController.createPost(req, res, () => {}).then(savedUser => {
+      expect(savedUser).to.have.property('posts');
+      expect(savedUser.posts).to.have.length(1);
       done();
     });
-
-    User.findOne.restore();
   });
 
   after(function(done) {
