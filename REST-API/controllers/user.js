@@ -55,12 +55,14 @@ exports.loginUser = async (req, res, next) => {
       password: user.password
     }, "secretPassPilu", { expiresIn: "1h" });
     res.status(200).json({message: "Login successfull!", token, userId: user._id });
+    return;
   }
   catch(err) {
     if(!err.statusCode) {
       err.statusCode = 500;
     }
     next(err);
+    return err;
   };
 };
 
@@ -72,7 +74,7 @@ exports.getUserstatus = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    res.status(200).json({message: "User details", status: user.status });
+    res.status(200).json({ status: user.status });
   }
   catch(err) {
     if(!err.statusCode) {
