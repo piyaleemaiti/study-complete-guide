@@ -36,6 +36,9 @@
       div {
         padding-bottom: 40px;
       }
+      label {
+        padding-top: 10px;
+      }
     </style>
   </head>
   <body>
@@ -246,6 +249,56 @@
       <h1>The Web Dev Show</h1>
       <iframe width="853" height="480" src="https://www.youtube.com/embed/G7i0GyfZEDU" frameborder="0" allowfullscreen></iframe>
       <p>From <a href="http://www.learntoprogram.tv">LearnToProgram Media</a></p>
+    </div>
+
+    <b> :: Form Tag :: </b>
+    <div>
+      <form action="#" method="GET">
+        <div>
+          <label for="first">First</label>
+          <input type="text" name="first" id="first" required><br>
+        </div>
+        <div>
+          <label for="last">Last</label>
+          <input type="text" name="last" id="last" maxlength="25"><br>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="text" name="email" id="email"><br>
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input type="phone" name="phone" id="phone"><br>
+        </div>
+        <div>
+          <label for="bio">Biography</label><br>
+          <textarea name="bio" id="bio" cols="30" rows="10"></textarea><br>
+        </div>
+        <div>
+          <label id="bands">Bands You Like</label><br/>
+          <input type="checkbox" name="bands" value="Journey">Journey<br/>
+          <input type="checkbox" name="bands" value="REO">REO Speedwagon<br/>
+          <input type="checkbox" name="bands" value="Foreigner">Foreigner<br/>
+          <input type="checkbox" name="bands" value="Heart">Heart<br/>
+          <input type="checkbox" name="bands" value="Scandal">Scandal<br/>
+        </div>
+        <div>
+          <label id="gender">Gender</label><br/>
+          <input type="radio" name="gender" value="male" checked="checked">Male<br/>
+          <input type="radio" name="gender" value="female">Female<br/>
+          <input type="radio" name="gender" value="other">Other<br/>
+        </div>
+        <div>
+          <label id="state">State</label>
+          <select id="state" name="state" size="5" multiple="multiple">
+            <option value="Alabama">Alabama</option>
+            <option value="Alaska">Alaska</option>
+            <option value="Connecticut">Connecticut</option>
+            <option value="Florida">Florida</option>
+            <option value="Illinois">Illinois</option>
+          </select>
+        </div>
+      </form>
     </div>
   </body>
 </html>
