@@ -81,8 +81,8 @@ exports.postAddProduct = (req, res, next) => {
     });
   }
   const errors = validationResult(req);
+  const imageUrl = image.path;
   if (!errors.isEmpty()) {
-    console.log(errors.array());
     return res.status(422).render("admin/edit-product", {
       pageTitle: "Add Product",
       path: "/admin/add-product",
@@ -98,7 +98,6 @@ exports.postAddProduct = (req, res, next) => {
       },
     });
   }
-  const imageUrl = image.path;
   const productDetails = {
     title,
     price,
@@ -152,7 +151,7 @@ exports.postEditProduct = (req, res, next) => {
       product: {
         _id,
         title,
-        imageUrl,
+        imageUrl: image.path,
         price,
         description,
       },

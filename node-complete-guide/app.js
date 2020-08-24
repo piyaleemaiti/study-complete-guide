@@ -30,7 +30,7 @@ const fileStorage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + "-" + file.originalname);
+    cb(null, new Date().getTime() + "-" + file.originalname);
   },
 });
 const fileFilter = (req, file, cb) => {
@@ -99,7 +99,7 @@ app.use("/500", errorController.get500);
 
 app.use(errorController.get404);
 app.use((error, req, res, next) => {
-  console.log('err', error);
+  console.log('app-err', error);
   res.render("500", {
     pageTitle: "Page Not Found",
     path: "/500",
