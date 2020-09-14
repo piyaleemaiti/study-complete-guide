@@ -66,23 +66,7 @@ function CalculateResult(calculationType) {
   // }
 }
 
-function add() {
-  CalculateResult("ADD");
-}
-
-function subtract() {
-  CalculateResult("SUBTRACT");
-}
-
-function multiply() {
-  CalculateResult("MULTIPLY");
-}
-
-function divide() {
-  CalculateResult("DIVIDE");
-}
-
-addBtn.addEventListener("click", add);
-subtractBtn.addEventListener("click", subtract);
-multiplyBtn.addEventListener("click", multiply);
-divideBtn.addEventListener("click", divide);
+addBtn.addEventListener("click", CalculateResult.bind(this, 'ADD'));
+subtractBtn.addEventListener("click", CalculateResult.bind(this, 'SUBTRACT'));
+multiplyBtn.addEventListener("click", CalculateResult.bind(this, 'MULTIPLY'));
+divideBtn.addEventListener("click", CalculateResult.bind(this, 'DIVIDE'));
