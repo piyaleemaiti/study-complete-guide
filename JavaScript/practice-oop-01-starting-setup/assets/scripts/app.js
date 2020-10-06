@@ -8,6 +8,7 @@ class DOMHelper {
     const element = document.getElementById(elementId);
     const destinationElement = document.querySelector(newDestinationSelector);
     destinationElement.append(element);
+    element.scrollIntoView({ behavior: 'smooth'});
   }
 }
 
@@ -29,9 +30,10 @@ class Component {
 }
 
 class Tooltip extends Component {
-  constructor(closeTooltipFun) {
-    super();
+  constructor(closeTooltipFun, text, hostElementId) {
+    super(hostElementId);
     this.closeTooltipNotifier = closeTooltipFun;
+    this.text = text;
     this.create();
   }
   closeTooltip = () => {
@@ -41,7 +43,19 @@ class Tooltip extends Component {
   create() {
     const tooltipElement = document.createElement('div');
     tooltipElement.className = 'card';
-    tooltipElement.textContent = 'DUMMY!';
+    tooltipElement.textContent = this.text;
+    console.log(this.hostElement.getBoundingClientRect());
+    const hostElementPosLeft = this.hostElement.offsetLeft;
+    const hostElementPosTop = this.hostElement.offsetTop;
+    const hostElementHeight = this.hostElement.clientHeight;
+    const parentElementScroll = this.hostElement.parentElement.scrollTop;
+
+    const x = hostElementPosLeft + 20;
+    const y = hostElementPosTop + hostElementHeight - parentElementScroll - 10;
+
+    tooltipElement.style.position = 'absolute';
+    tooltipElement.style.left = `${x}px`;
+    tooltipElement.style.top = `${y}px`;
     tooltipElement.addEventListener('click', this.closeTooltip);
     this.element = tooltipElement;
   }
@@ -62,16 +76,18 @@ class ProjectItem {
     if (this.hasActiveTooltip) {
       return;
     }
+    const projectElement = document.getElementById(this.id);
+    this.toolTipText = projectElement.dataset.extraInfo;
     const toolTip = new Tooltip(() => {
       this.hasActiveTooltip = false;
-    });
+    }, this.toolTipText, this.id);
     toolTip.attach();
     this.hasActiveTooltip = true;
   }
   connectMoreInfoButton() {
     const documentElement = document.getElementById(this.id);
     const moreInfoBtn = documentElement.querySelector('button:first-of-type');
-    moreInfoBtn.addEventListener('click', this.showMoreInfoHandler);
+    moreInfoBtn.addEventListener('click', this.showMoreInfoHandler.bind(this));
   }
   connectSwitchButton(type) {
     const documentElement = document.getElementById(this.id);
