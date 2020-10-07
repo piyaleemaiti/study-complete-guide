@@ -43,8 +43,11 @@ class Tooltip extends Component {
   create() {
     const tooltipElement = document.createElement('div');
     tooltipElement.className = 'card';
-    tooltipElement.textContent = this.text;
-    console.log(this.hostElement.getBoundingClientRect());
+    const tooltipTemplate = document.getElementById('tooltip');
+    const tooltipBody = document.importNode(tooltipTemplate.content, true);
+    tooltipBody.querySelector('p').textContent = this.text;
+    tooltipElement.append(tooltipBody);
+
     const hostElementPosLeft = this.hostElement.offsetLeft;
     const hostElementPosTop = this.hostElement.offsetTop;
     const hostElementHeight = this.hostElement.clientHeight;
@@ -131,6 +134,16 @@ class App {
     const finishedProject = new ProjectList('finished');
     activeProject.setupSwitchHandler(finishedProject.addProject.bind(finishedProject));
     finishedProject.setupSwitchHandler(activeProject.addProject.bind(activeProject));
+    const timerId = setTimeout(this.startAnalytics, 3000);
+    document.getElementById('analytics-btn').addEventListener('click', () => {
+      clearTimeout(timerId);
+    });
+  }
+  static startAnalytics() {
+    const analyticsScript = document.createElement('script');
+    analyticsScript.src = 'assets/scripts/analytics.js';
+    analyticsScript.defer = true;
+    document.head.append(analyticsScript);
   }
 }
 
