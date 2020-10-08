@@ -71,6 +71,7 @@ class ProjectItem {
     this.updateProjectHandler = updateProjectListHandlerFun;
     this.connectMoreInfoButton();
     this.connectSwitchButton(type);
+    this.connectDrag();
   }
   closeTooltipNotifier = () => {
     this.hasActiveTooltip = false;
@@ -86,6 +87,17 @@ class ProjectItem {
     }, this.toolTipText, this.id);
     toolTip.attach();
     this.hasActiveTooltip = true;
+  }
+  connectDrag() {
+    const item = document.getElementById(this.id);
+    item.addEventListener('dragstart', (event) => {
+      console.log(event.dataTransfer);
+      event.dataTransfer.setData('text/plain', this.id);
+      event.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', event => {
+      console.log(event);
+    });
   }
   connectMoreInfoButton() {
     const documentElement = document.getElementById(this.id);
@@ -113,6 +125,34 @@ class ProjectList {
     for (const projItem of projectItems) {
       this.projects.push(new ProjectItem(projItem.id, this.switchProject.bind(this), this.type));
     }
+    this.connectDroppable();
+  }
+  connectDroppable() {
+    const list = document.querySelector(`#${this.type}-projects ul`);
+    list.addEventListener('dragenter', (event) => {
+      if (event.dataTransfer.types[0] === 'text/plain') {
+        list.parentElement.classList.add('droppable');
+        event.preventDefault();
+      }
+    });
+    list.addEventListener('dragover', (event) => {
+      if (event.dataTransfer.types[0] === 'text/plain') {
+        event.preventDefault();
+      }
+    });
+    list.addEventListener('dragleave', (event) => {
+      if (event.relatedTarget.closest(`#${this.type}-projects ul`) !== list) {
+        list.parentElement.classList.remove('droppable');
+      }
+    });
+    list.addEventListener('drop', event => {
+      const projId = event.dataTransfer.getData('text/plain');
+      if (this.projects.find(p => p.id === projId)) {
+        return;
+      }
+      document.getElementById(projId).querySelector('button:last-of-type').click();
+      list.parentElement.classList.remove('droppable');
+    });
   }
   setupSwitchHandler(switchHandlerFun) {
     this.switchHandler = switchHandlerFun;
@@ -134,10 +174,10 @@ class App {
     const finishedProject = new ProjectList('finished');
     activeProject.setupSwitchHandler(finishedProject.addProject.bind(finishedProject));
     finishedProject.setupSwitchHandler(activeProject.addProject.bind(activeProject));
-    const timerId = setTimeout(this.startAnalytics, 3000);
-    document.getElementById('analytics-btn').addEventListener('click', () => {
-      clearTimeout(timerId);
-    });
+    // const timerId = setTimeout(this.startAnalytics, 3000);
+    // document.getElementById('analytics-btn').addEventListener('click', () => {
+    //   clearTimeout(timerId);
+    // });
   }
   static startAnalytics() {
     const analyticsScript = document.createElement('script');
