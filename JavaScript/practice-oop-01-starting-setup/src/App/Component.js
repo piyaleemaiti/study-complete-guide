@@ -11,6 +11,9 @@ export class Component {
     this.element.remove();
   }
   attach() {
-    this.hostElement.insertAdjacentElement((this.insertBefore ? 'afterbegin' : 'beforeend'), this.element);
+    this.hostElement.insertAdjacentElement(
+      this.insertBefore ? 'afterbegin' : 'beforeend',
+      this.element
+    );
   }
 }

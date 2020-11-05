@@ -2,16 +2,17 @@ import { Tooltip } from './Tooltip.js';
 import { DOMHelper } from '../Utility/DOMHelper.js';
 
 export class ProjectItem {
-  hasActiveTooltip = false;
+  // hasActiveTooltip = false;
   constructor(id, updateProjectListHandlerFun, type) {
     this.id = id;
+    this.hasActiveTooltip = false;
     this.updateProjectHandler = updateProjectListHandlerFun;
     this.connectMoreInfoButton();
     this.connectSwitchButton(type);
     this.connectDrag();
-  }
-  closeTooltipNotifier = () => {
-    this.hasActiveTooltip = false;
+    this.closeTooltipNotifier = () => {
+      this.hasActiveTooltip = false;
+    }
   }
   showMoreInfoHandler() {
     if (this.hasActiveTooltip) {

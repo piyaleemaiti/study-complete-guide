@@ -6,10 +6,10 @@ export class Tooltip extends Component {
     this.closeTooltipNotifier = closeTooltipFun;
     this.text = text;
     this.create();
-  }
-  closeTooltip = () => {
-    this.detach();
-    this.closeTooltipNotifier();
+    this.closeTooltip = () => {
+      this.detach();
+      this.closeTooltipNotifier();
+    }
   }
   create() {
     const tooltipElement = document.createElement('div');
