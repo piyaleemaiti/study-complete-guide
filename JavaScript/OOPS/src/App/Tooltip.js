@@ -9,7 +9,7 @@ export class Tooltip extends Component {
     this.closeTooltip = () => {
       this.detach();
       this.closeTooltipNotifier();
-    }
+    };
   }
   create() {
     const tooltipElement = document.createElement('div');

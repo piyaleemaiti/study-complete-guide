@@ -9,10 +9,10 @@
         "sourceType": "module"
     },
     "rules": {
-        "quote-props": "error",
         "quotes": [
             "error",
             "single"
-        ]
+        ],
+        "semi": "error"
     }
 }

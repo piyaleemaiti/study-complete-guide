@@ -12,7 +12,7 @@ export class ProjectItem {
     this.connectDrag();
     this.closeTooltipNotifier = () => {
       this.hasActiveTooltip = false;
-    }
+    };
   }
   showMoreInfoHandler() {
     if (this.hasActiveTooltip) {
