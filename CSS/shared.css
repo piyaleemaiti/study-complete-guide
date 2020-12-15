@@ -13,7 +13,7 @@ body {
   left: 0;
   background: #2ddf5c;
   padding: 8px 16px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .main-header > div {
