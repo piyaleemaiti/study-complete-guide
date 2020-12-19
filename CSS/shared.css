@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
 }
+
 body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
@@ -13,7 +14,7 @@ body {
   left: 0;
   background: #2ddf5c;
   padding: 8px 16px;
-  z-index: 2;
+  z-index: 1;
 }
 
 .main-header > div {
@@ -62,8 +63,8 @@ body {
 .main-nav__item--cta a {
   color: white;
   background: #ff1b68;
-  border-radius: 8px;
   padding: 8px 16px;
+  border-radius: 8px;
 }
 
 .main-nav__item--cta a:hover,
@@ -79,26 +80,26 @@ body {
   margin-top: 48px;
 }
 
-.main-footer_links {
+.main-footer__links {
   list-style: none;
   margin: 0;
   padding: 0;
   text-align: center;
 }
 
-.main-footer_link {
+.main-footer__link {
   display: inline-block;
   margin: 0 16px;
 }
 
-.main-footer_link a {
-  text-decoration: none;
+.main-footer__link a {
   color: white;
+  text-decoration: none;
 }
 
-.main-footer_link a:hover,
-.main-footer_link a:active {
-  color: #cccccc;
+.main-footer__link a:hover,
+.main-footer__link a:active {
+  color: #ccc;
 }
 
 .button {

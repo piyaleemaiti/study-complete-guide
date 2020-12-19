@@ -16,7 +16,6 @@ main {
   border: 4px solid #014d01;
   border-left: none;
   position: relative;
-  z-index: 1;
 }
 
 .package__badge {

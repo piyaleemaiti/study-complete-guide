@@ -1,9 +1,12 @@
-#products-overview {
-  background: url("freedom.jpg");
+#product-overview {
+  background-image: url("freedom.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   width: 100%;
   height: 528px;
   padding: 10px;
-  margin-top: 60px;
+  margin-top: 43px;
   position: relative;
 }
 
@@ -12,12 +15,12 @@
   text-align: center;
 }
 
-#products-overview h1 {
+#product-overview h1 {
   color: white;
   font-family: 'Anton', sans-serif;
   position: absolute;
-  left: 20px;
-  bottom: 0;
+  bottom: 5%;
+  left: 3%;
 }
 
 .plan__lists {
@@ -31,8 +34,8 @@
   text-align: center;
   padding: 16px;
   margin: 8px;
-  width: 30%;
   display: inline-block;
+  width: 30%;
   vertical-align: middle;
 }
 
@@ -46,9 +49,8 @@
   background: white;
   color: #19b84c;
   padding: 8px;
-  margin: 10px;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 .plan__title {
@@ -56,7 +58,7 @@
 }
 
 .plan__price {
-  color: #885588;
+  color: #858585;
 }
 
 .plan--highlighted .plan__title {
@@ -69,50 +71,50 @@
 
 .plan__features {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .plan__features li {
   margin: 8px 0;
 }
 
-#second-section {
+#key-features {
   background: #ff1b68;
-  text-align: center;
-  padding: 8px 5px;
+  margin-top: 80px;
+  padding: 16px;
 }
 
-#second-section .section-title {
+#key-features .section-title {
   color: white;
   margin: 32px;
 }
 
-.list-items {
-  text-align: center;
+.key-feature__list {
+  list-style: none;
   margin: 0;
   padding: 0;
-  list-style: none;
+  text-align: center;
 }
 
-.list-items li {
-  width: 30%;
+.key-feature__list li {
   display: inline-block;
+  width: 30%;
   vertical-align: top;
 }
 
-.list-description {
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.list-image {
+.key-feature__image {
+  background: #ffcede;
   width: 128px;
   height: 128px;
   border: 2px solid #424242;
   border-radius: 50%;
-  background: #ffcede;
   margin: auto;
+}
+
+.key-feature__description {
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  font-size: 20px;
 }
