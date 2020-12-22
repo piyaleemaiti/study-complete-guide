@@ -1,5 +1,5 @@
 #product-overview {
-  background: url("images/freedom.jpg") left 10% bottom 20%/cover no-repeat border-box;
+  background: linear-gradient(rgba(80, 68, 18, 0.6), transparent), url("images/freedom.jpg") left 10% bottom 20%/cover no-repeat border-box, red;
   /* background-image: url("freedom.jpg");
   background-size: cover;
   background-position: left 10% bottom 20%;
@@ -113,6 +113,7 @@
   border: 2px solid #424242;
   border-radius: 50%;
   margin: auto;
+  padding: 20px;
 }
 
 .key-feature__description {
